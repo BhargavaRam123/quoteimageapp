@@ -1,95 +1,51 @@
-import Image from "next/image";
-import styles from "./page.module.css";
-
+"use client";
+import { tags } from "./constants/selectarray";
+import Mainapi from "./components/apicomponent/mainapi";
+import Imagecomponent from "./components/imagecomponent";
+import Radiocomp from "./components/radiocomp";
 export default function Home() {
+  const { tag, settag, handleonclick } = Mainapi();
+
+  function onchange(e) {
+    settag((p) => ({ ...p, [e.target.name]: e.target.value }));
+  }
+
+  console.log("tag value:", tag);
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>src/app/page.js</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <>
+      <div className="maincontainer">
+        <div className="container">
+          <div>
+            <div className="heading">Enter Tag Of The Quote</div>
+            <div>
+              <select name="quote" onChange={onchange}>
+                {tags.map((val) => {
+                  return <option value={val}>{val}</option>;
+                })}
+              </select>
+            </div>
+          </div>
+          <div>
+            <div className="heading">Enter Tag Of The Image</div>
+            <div>
+              <input
+                type="text"
+                name="image"
+                value={tag.image}
+                onChange={onchange}
+              />
+            </div>
+          </div>
         </div>
+        <Radiocomp tag={tag} settag={settag} />
+        <div>
+          <button onClick={handleonclick} className="btn">
+            Get
+          </button>
+        </div>
+
+        <Imagecomponent tag={tag} />
       </div>
-
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+    </>
   );
 }
