@@ -4,11 +4,14 @@ import OtpInput from "react-otp-input";
 import { useState } from "react";
 import { setotp } from "../redux/slices/signupslice";
 import { useDispatch } from "react-redux";
+import User from "../services/operations/user";
 export default function Otp() {
   const dispatch = useDispatch();
+  const { startsignup } = User();
   function handlesubmit(e) {
     e.preventDefault();
     dispatch(setotp(otp));
+    startsignup();
   }
   const [otp, setOtp] = useState("");
   return (

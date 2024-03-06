@@ -1,8 +1,7 @@
 "use client";
 import { useState } from "react";
-import { UseDispatch } from "react-redux";
 import styles from "./signup.module.css";
-// import Signup from "../services/operations/user";
+import User from "../services/operations/user";
 import { setuserdata } from "../redux/slices/signupslice";
 import { useDispatch } from "react-redux";
 export default function Signup() {
@@ -16,9 +15,11 @@ export default function Signup() {
   function handlechange(e) {
     setobj((p) => ({ ...p, [e.target.name]: e.target.value }));
   }
-  function handleonsubmit(e) {
+  const { sendotpop } = User();
+  async function handleonsubmit(e) {
     e.preventDefault();
     dispatch(setuserdata(obj));
+    await sendotpop();
   }
   return (
     <div className={styles.maincontainer}>
