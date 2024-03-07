@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from "./signup.module.css";
 import User from "../services/operations/user";
 import { setuserdata } from "../redux/slices/signupslice";
@@ -7,19 +7,22 @@ import { useDispatch } from "react-redux";
 export default function Signup() {
   const dispatch = useDispatch();
   const [obj, setobj] = useState({
-    username: "",
+    firstname: "",
+    lastname: "",
     email: "",
     password: "",
     confirmpassword: "",
   });
+
   function handlechange(e) {
     setobj((p) => ({ ...p, [e.target.name]: e.target.value }));
   }
   const { sendotpop } = User();
   async function handleonsubmit(e) {
     e.preventDefault();
+    console.log(obj);
     dispatch(setuserdata(obj));
-    await sendotpop();
+    sendotpop(obj.email);
   }
   return (
     <div className={styles.maincontainer}>
@@ -27,12 +30,23 @@ export default function Signup() {
         <div className={styles.container}>
           <div>Sign Up</div>
           <div>
-            <div>Username</div>
+            <div>FirstName</div>
             <div>
               <input
                 type="text"
-                value={obj.username}
-                name="username"
+                value={obj.firstname}
+                name="firstname"
+                onChange={handlechange}
+              />
+            </div>
+          </div>
+          <div>
+            <div>LastName</div>
+            <div>
+              <input
+                type="text"
+                value={obj.lastname}
+                name="lastname"
                 onChange={handlechange}
               />
             </div>

@@ -1,2 +1,28 @@
 .container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  height: 350px;
+  width: 400px;
+  border: 1px solid white;
+  border-radius: 5px;
+  color: white;
+}
+.maincontainer {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.btn {
+  padding: 10px 20px;
+  font-size: 17px;
+  border: 1px solid white;
+  transition: transform 0.5s;
+}
+
+.btn:hover {
+  transform: translateY(-10px);
 }

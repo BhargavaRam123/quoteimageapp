@@ -1,7 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   email: "",
-  username: "",
+  firstname: "",
+  lastname: "",
   password: "",
   confirmpassword: "",
   otp: "",
@@ -13,7 +14,8 @@ export const Signupslice = createSlice({
     setuserdata(state, action) {
       console.log("setuser action data:", action.payload);
       state.email = action.payload.email;
-      state.username = action.payload.username;
+      state.firstname = action.payload.firstname;
+      state.lastname = action.payload.lastname;
       state.password = action.payload.password;
       state.confirmpassword = action.payload.confirmpassword;
     },
