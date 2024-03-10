@@ -2,7 +2,11 @@
 import { useState } from "react";
 import User from "../services/operations/user";
 import styles from "./login.module.css";
+import { useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
 export default function Login() {
+  const { token } = useSelector((state) => state.User);
+  const router = useRouter();
   const { login_op } = User();
   const [obj, setobj] = useState({
     email: "",
@@ -15,7 +19,9 @@ export default function Login() {
   function handlechange(e) {
     setobj((p) => ({ ...p, [e.target.name]: e.target.value }));
   }
-  return (
+  return token ? (
+    router.push("/")
+  ) : (
     <div className={styles.maincontainer}>
       <form onSubmit={handleonsubmit}>
         <div className={styles.container}>

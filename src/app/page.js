@@ -3,7 +3,11 @@ import { tags } from "./constants/selectarray";
 import Mainapi from "./components/apicomponent/mainapi";
 import Imagecomponent from "./components/imagecomponent";
 import Radiocomp from "./components/radiocomp";
+import { useSelector } from "react-redux";
+import { useRouter } from "next/navigation";
 export default function Home() {
+  const router = useRouter();
+  const { token } = useSelector((state) => state.User);
   const { tag, settag, handleonclick } = Mainapi();
 
   function onchange(e) {
@@ -11,7 +15,7 @@ export default function Home() {
   }
 
   console.log("tag value:", tag);
-  return (
+  return token ? (
     <>
       <div className="maincontainer">
         <div className="container">
@@ -47,5 +51,7 @@ export default function Home() {
         <Imagecomponent tag={tag} />
       </div>
     </>
+  ) : (
+    router.push("/login")
   );
 }

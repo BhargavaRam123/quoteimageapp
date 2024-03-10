@@ -1,14 +1,19 @@
 import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
-  token: "",
+  token: null || localStorage?.getItem("token"),
+  email: "" || localStorage?.getItem("email"),
 };
 export const Userslice = createSlice({
   name: "User",
   initialState,
   reducers: {
     setToken(state, action) {
-      state.token = action.payload;
-      console.log("token value is initialised in the reducer", action.payload);
+      console.log("payload value", action.payload);
+      state.token = action.payload.token;
+      state.email = action.payload.email;
+      localStorage.setItem("token", state.token);
+      localStorage.setItem("email", state.email);
+      // console.log("token value is initialised in the reducer", action.payload);
     },
   },
 });

@@ -1,9 +1,12 @@
 "use client";
 import { useRouter } from "next/navigation";
 import { apiconnector } from "../apiconnector";
+import { setToken } from "@/app/redux/slices/userslice";
 import { Userroutes } from "./api";
 import toast from "react-hot-toast";
+import { useDispatch } from "react-redux";
 export default function User() {
+  const dispatch = useDispatch();
   const router = useRouter();
   async function sendotpop(email) {
     console.log("email value is:", email);
@@ -62,7 +65,10 @@ export default function User() {
       });
       console.log("login response:", loginres);
 
-      // router.push("/");
+      router.push("/");
+      const token = loginres.data.token;
+      console.log("token value is:", token);
+      dispatch(setToken({ token, email }));
       toast.dismiss(toastid);
       toast.success("Logged In");
     } catch (error) {
@@ -71,5 +77,48 @@ export default function User() {
       toast.error("Error Occured");
     }
   }
-  return { sendotpop, startsignup, login_op };
+  // async function uploadtocloud(imagename, dataURL, email) {
+  //   const toastid = toast.loading("uploading....");
+  //   try {
+  //     console.log("imageurl and name are", imagename, dataURL);
+  //     const uploadres = await apiconnector("POST", Userroutes.upload, {
+  //       email: email,
+  //       file: dataURL,
+  //       imgname: imagename,
+  //     });
+  //     console.log("upload response:", uploadres);
+  //     toast.dismiss(toastid);
+  //     toast.success("Uploaded To cloud");
+  //   } catch (error) {
+  //     console.log("error occured in uploadtocloud function :", error);
+  //     toast.dismiss(toastid);
+  //     toast.error("Error Occured");
+  //   }
+
+  async function uploadtocloud(imageBlob, imagename, email) {
+    const toastid = toast.loading("uploading....");
+    try {
+      console.log("imageurl and name are", imagename, imageBlob);
+      // Create FormData object to send file
+      console.log("blob value:", typeof imageBlob);
+      const formData = new FormData();
+      formData.append("file", imageBlob, "file.jpg"); // Adjust filename as needed
+
+      // Add other required parameters
+      formData.append("email", email);
+      formData.append("imgname", imagename);
+
+      // Perform upload to cloud service
+      const response = await apiconnector("POST", Userroutes.upload, formData);
+      console.log("response", response);
+      toast.dismiss(toastid);
+      toast.success("Uploaded To cloud");
+    } catch (error) {
+      console.error("Error occurred in uploadtocloud function :", error);
+      toast.dismiss(toastid);
+      toast.error("Error Occurred");
+    }
+  }
+
+  return { sendotpop, startsignup, login_op, uploadtocloud };
 }
