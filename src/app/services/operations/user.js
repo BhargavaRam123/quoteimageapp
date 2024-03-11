@@ -64,7 +64,6 @@ export default function User() {
         password: password,
       });
       console.log("login response:", loginres);
-
       router.push("/");
       const token = loginres.data.token;
       console.log("token value is:", token);
@@ -77,23 +76,6 @@ export default function User() {
       toast.error("Error Occured");
     }
   }
-  // async function uploadtocloud(imagename, dataURL, email) {
-  //   const toastid = toast.loading("uploading....");
-  //   try {
-  //     console.log("imageurl and name are", imagename, dataURL);
-  //     const uploadres = await apiconnector("POST", Userroutes.upload, {
-  //       email: email,
-  //       file: dataURL,
-  //       imgname: imagename,
-  //     });
-  //     console.log("upload response:", uploadres);
-  //     toast.dismiss(toastid);
-  //     toast.success("Uploaded To cloud");
-  //   } catch (error) {
-  //     console.log("error occured in uploadtocloud function :", error);
-  //     toast.dismiss(toastid);
-  //     toast.error("Error Occured");
-  //   }
 
   async function uploadtocloud(imageBlob, imagename, email) {
     const toastid = toast.loading("uploading....");
@@ -120,5 +102,26 @@ export default function User() {
     }
   }
 
-  return { sendotpop, startsignup, login_op, uploadtocloud };
+  async function getcreations_op(email, token) {
+    const toastid = toast.loading("Loading....");
+    try {
+      console.log("email and token are", email, token);
+      const getcreationsres = await apiconnector(
+        "GET",
+        Userroutes.getcreations,
+        {},
+        { Authorization: `Bearer ${token}` }
+      );
+      console.log("getcreationsres response:", getcreationsres);
+      toast.dismiss(toastid);
+      toast.success("Creations Fetched");
+      return getcreationsres;
+    } catch (error) {
+      console.log("error occured in getcreations function :", error.message);
+      toast.dismiss(toastid);
+      toast.error("Error Occured");
+      return [];
+    }
+  }
+  return { sendotpop, startsignup, login_op, uploadtocloud, getcreations_op };
 }

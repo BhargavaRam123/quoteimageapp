@@ -4,4 +4,5 @@ export const Userroutes = {
   sendotp: BASE_API_URL + "/sendotp",
   login: BASE_API_URL + "/login",
   upload: BASE_API_URL + "/upload",
+  getcreations: BASE_API_URL + "/getcreations",
 };

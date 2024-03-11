@@ -15,8 +15,14 @@ export const Userslice = createSlice({
       localStorage.setItem("email", state.email);
       // console.log("token value is initialised in the reducer", action.payload);
     },
+    logout(state) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("email");
+      state.token = null;
+      state.email = null;
+    },
   },
 });
 
-export const { setToken } = Userslice.actions;
+export const { setToken, logout } = Userslice.actions;
 export default Userslice.reducer;

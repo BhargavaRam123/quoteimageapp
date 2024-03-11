@@ -3,6 +3,7 @@ import { store } from "./redux/store";
 import { Provider } from "react-redux";
 import { Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
+import Navbar from "./components/commoncomponents/navbar";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"] });
@@ -17,6 +18,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <Provider store={store}>
         <body className={inter.className}>
+          <Navbar />
           <Toaster />
           {children}
         </body>
