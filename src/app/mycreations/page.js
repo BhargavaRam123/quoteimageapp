@@ -1,5 +1,6 @@
 "use client";
-import { useEffect, useState } from "react";
+import { createElement, useEffect, useState } from "react";
+import Link from "next/link";
 import User from "../services/operations/user";
 import { useSelector } from "react-redux";
 import Image from "next/image";
@@ -13,14 +14,31 @@ export default function Mycreations() {
     console.log("array response", arr);
     setcreations(arr.data.images);
   }
+  async function handleclick(url, name) {
+    const imageblob = await fetch(url)
+      .then((res) => res.arrayBuffer())
+      .then((buffer) => new Blob([buffer], { type: "image/jpeg" }));
+    const link = document.createElement("a");
+    link.href = URL.createObjectURL(imageblob);
+    link.download = name;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
   useEffect(() => {
     callapi();
   }, []);
   return (
     <div className={styles.cardcontainer}>
       {creations.map((o) => (
-        <div className={styles.card}>
-          <Image src={o.url} fill />
+        <div>
+          <div className={styles.card}>
+            <Image src={o.url} fill />
+          </div>
+          <Link href={`/mycreations/${o.imageid}`}>click here</Link>
+          <button onClick={() => handleclick(o.url, o.imgname)}>
+            Download
+          </button>
         </div>
       ))}
     </div>

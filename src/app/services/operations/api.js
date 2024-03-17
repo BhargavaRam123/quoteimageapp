@@ -5,4 +5,6 @@ export const Userroutes = {
   login: BASE_API_URL + "/login",
   upload: BASE_API_URL + "/upload",
   getcreations: BASE_API_URL + "/getcreations",
+  getcreationbyid: BASE_API_URL + "/getcreationbyid",
+  twitfileupload: BASE_API_URL + "/twitfileupload",
 };

@@ -123,5 +123,66 @@ export default function User() {
       return [];
     }
   }
-  return { sendotpop, startsignup, login_op, uploadtocloud, getcreations_op };
+  async function getcreationbyid_op(token, imageid) {
+    const toastid = toast.loading("Loading....");
+    try {
+      // console.log("email and token are", email, token);
+      const getcreationsbyidres = await apiconnector(
+        "POST",
+        Userroutes.getcreationbyid,
+        {
+          imageid: imageid,
+        },
+        { Authorization: `Bearer ${token}` }
+      );
+      console.log("getcreationsres response:", getcreationsbyidres);
+      toast.dismiss(toastid);
+      toast.success("Image Fetched");
+      return getcreationsbyidres;
+    } catch (error) {
+      console.log(
+        "error occured in getcreationsbyid function :",
+        error.message
+      );
+      toast.dismiss(toastid);
+      toast.error("Error Occured");
+      return "";
+    }
+  }
+  async function uploadfiletotwittercloud_op(imageblob, email) {
+    const toastid = toast.loading("uploading....");
+    try {
+      console.log("blob value:", imageblob);
+      const formData = new FormData();
+
+      formData.append("file", imageblob, "files.jpg");
+
+      formData.append("email", email);
+
+      const response = await apiconnector(
+        "POST",
+        Userroutes.twitfileupload,
+        formData
+      );
+      console.log("response", response);
+      toast.dismiss(toastid);
+      toast.success("Uploaded To Twitter");
+    } catch (error) {
+      console.error(
+        "Error occurred in uploadfiletotwittercloud_op function :",
+        error
+      );
+      toast.dismiss(toastid);
+      toast.error("Error Occurred");
+    }
+  }
+  return {
+    sendotpop,
+    startsignup,
+    login_op,
+    uploadtocloud,
+    getcreations_op,
+    getcreationbyid_op,
+    uploadfiletotwittercloud_op,
+  };
 }
