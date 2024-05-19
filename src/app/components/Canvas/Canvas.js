@@ -3,7 +3,10 @@ import { useState } from "react";
 import User from "@/app/services/operations/user";
 import { useRef } from "react";
 import { useSelector } from "react-redux";
-const Canvas = ({ tag }) => {
+import ShineButton from "../button/button";
+const Canvas = ({ tag,init,setinit }) => {
+  if(tag.imageurl!=='')
+    setinit(1)
   const { email } = useSelector((state) => state.User);
   const [imagename, setimagename] = useState("");
   const { uploadtocloud } = User();
@@ -16,10 +19,12 @@ const Canvas = ({ tag }) => {
     uploadtocloud(imageBlob, imagename, email);
   }
   const ref = useRef();
+  // setinit(1)
   const pixelRatio = window.devicePixelRatio || 1;
   const image = new Image();
   image.src = tag.imageurl ? tag.imageurl : "";
   image.addEventListener("load", () => {
+    
     const canvas = ref.current;
     const context = canvas.getContext("2d");
     canvas.width = canvas.offsetWidth * pixelRatio;
@@ -67,7 +72,7 @@ const Canvas = ({ tag }) => {
 
   return (
     <div>
-      <canvas ref={ref} />;
+      <canvas ref={ref} className={init===0?"dnone":"normal"} />;
       <div
         style={{
           display: "flex",
@@ -75,22 +80,25 @@ const Canvas = ({ tag }) => {
           alignItems: "center",
         }}
       >
-        <button
+        {/* <button
           onClick={handleDownload}
           download={Date.now() + ".jpg"}
           className="dbtn"
         >
           Download
-        </button>
+        </button> */}
+        <div onClick={handleDownload} download={Date.now() + ".jpg"}  >
+        <ShineButton value="Download"/>
+        </div>
       </div>
-      <form onSubmit={handleonsubmit}>
-        <div>Enter The name of the image to save it to online</div>
+      <form onSubmit={handleonsubmit} style={{display:"flex",flexDirection:"column" ,alignItems:"center"}}>
+        <div style={{color:"white"}}>Upload To My Creations</div>
         <input
           type="text"
           onChange={(e) => setimagename(e.target.value)}
           value={imagename}
         />
-        <button>save to cloud</button>
+       <ShineButton value="Upload"/>
       </form>
     </div>
   );

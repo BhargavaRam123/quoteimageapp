@@ -4,6 +4,8 @@ import Link from "next/link";
 import User from "../services/operations/user";
 import { useSelector } from "react-redux";
 import Image from "next/image";
+import { FaExternalLinkAlt } from "react-icons/fa";
+import { FaDownload } from "react-icons/fa";
 import styles from "./mycreations.module.css";
 export default function Mycreations() {
   const { email, token } = useSelector((state) => state.User);
@@ -30,17 +32,22 @@ export default function Mycreations() {
   }, []);
   return (
     <div className={styles.cardcontainer}>
-      {creations.map((o) => (
-        <div>
-          <div className={styles.card}>
-            <Image src={o.url} fill />
+      {creations?.map((o) => {
+        console.log("o value :", o);
+        return (
+          <div className={styles.container} >
+            <div className={styles.card}>
+              <Image src={o.url} fill />
+            </div>
+            <div className={styles.icardcontainer}>
+            <Link href={`/mycreations/${o.imageid}`}><FaExternalLinkAlt /></Link>
+            <button onClick={() => handleclick(o.url, o.imgname)}>
+            <FaDownload />
+            </button>
+            </div>
           </div>
-          <Link href={`/mycreations/${o.imageid}`}>click here</Link>
-          <button onClick={() => handleclick(o.url, o.imgname)}>
-            Download
-          </button>
-        </div>
-      ))}
+        );
+      })}
     </div>
   );
 }

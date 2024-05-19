@@ -155,7 +155,7 @@ export default function User() {
       console.log("blob value:", imageblob);
       const formData = new FormData();
 
-      formData.append("file", imageblob, "files.jpg");
+      formData.append("files", imageblob, "files.jpg");
 
       formData.append("email", email);
 

@@ -4,6 +4,7 @@ import styles from "./signup.module.css";
 import User from "../services/operations/user";
 import { setuserdata } from "../redux/slices/signupslice";
 import { useDispatch } from "react-redux";
+import Image from "next/image";
 export default function Signup() {
   const dispatch = useDispatch();
   const [obj, setobj] = useState({
@@ -26,6 +27,11 @@ export default function Signup() {
   }
   return (
     <div className={styles.maincontainer}>
+      <div className={styles.mcontainer}>
+
+      <div className={styles.imagecontainer}>
+        <Image src="/signup.webp" fill />
+      </div>
       <form onSubmit={handleonsubmit}>
         <div className={styles.container}>
           <div>Sign Up</div>
@@ -36,8 +42,9 @@ export default function Signup() {
                 type="text"
                 value={obj.firstname}
                 name="firstname"
-                onChange={handlechange}
-              />
+                onChange={handlechange}                
+                className={styles.minput}
+                />
             </div>
           </div>
           <div>
@@ -48,7 +55,8 @@ export default function Signup() {
                 value={obj.lastname}
                 name="lastname"
                 onChange={handlechange}
-              />
+                className={styles.minput}
+                />
             </div>
           </div>
 
@@ -60,7 +68,9 @@ export default function Signup() {
                 value={obj.email}
                 name="email"
                 onChange={handlechange}
-              />
+                className={styles.minput}
+                
+                />
             </div>
           </div>
           <div>
@@ -71,7 +81,9 @@ export default function Signup() {
                 value={obj.password}
                 name="password"
                 onChange={handlechange}
-              />
+                className={styles.minput}
+                
+                />
             </div>
           </div>
           <div>
@@ -82,7 +94,9 @@ export default function Signup() {
                 value={obj.confirmpassword}
                 name="confirmpassword"
                 onChange={handlechange}
-              />
+                className={styles.minput}
+                
+                />
             </div>
           </div>
           <div>
@@ -90,6 +104,7 @@ export default function Signup() {
           </div>
         </div>
       </form>
+                </div>
     </div>
   );
 }

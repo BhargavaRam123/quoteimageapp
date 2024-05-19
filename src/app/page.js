@@ -1,12 +1,15 @@
 "use client";
 import { tags } from "./constants/selectarray";
+import NeubrutalismButton from "./components/button/button";
 import Mainapi from "./components/apicomponent/mainapi";
 import Imagecomponent from "./components/imagecomponent";
 import Radiocomp from "./components/radiocomp";
+import { useState } from "react";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 export default function Home() {
   const router = useRouter();
+  const [init,setinit] = useState(0)
   const { token } = useSelector((state) => state.User);
   const { tag, settag, handleonclick } = Mainapi();
 
@@ -20,9 +23,9 @@ export default function Home() {
       <div className="maincontainer">
         <div className="container">
           <div>
-            <div className="heading">Enter Tag Of The Quote</div>
+            <div className="heading">Quote Type</div>
             <div>
-              <select name="quote" onChange={onchange}>
+              <select name="quote" onChange={onchange} className="inputs">
                 {tags.map((val) => {
                   return <option value={val}>{val}</option>;
                 })}
@@ -30,25 +33,30 @@ export default function Home() {
             </div>
           </div>
           <div>
-            <div className="heading">Enter Tag Of The Image</div>
+            <div className="heading">Image Tag</div>
             <div>
               <input
                 type="text"
                 name="image"
                 value={tag.image}
                 onChange={onchange}
+                style={{textAlign:"left"}}
+                className="inputs"
               />
             </div>
           </div>
         </div>
         <Radiocomp tag={tag} settag={settag} />
         <div>
-          <button onClick={handleonclick} className="btn">
+          {/* <button onClick={handleonclick} className="btn">
             Get
-          </button>
+          </button> */}
+          <div onClick={handleonclick}>
+          <NeubrutalismButton value="Get"/>
+          </div>
         </div>
 
-        <Imagecomponent tag={tag} />
+        <Imagecomponent tag={tag} init={init} setinit={setinit} />
       </div>
     </>
   ) : (
