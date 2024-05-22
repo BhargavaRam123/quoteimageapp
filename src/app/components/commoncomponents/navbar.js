@@ -41,8 +41,8 @@ export default function Navbar() {
         Profile
         </Link>
         </div>
-      <div className={pathname==='/logout'?styles.cards:styles.card}>
-        <Link href="/logout" className={pathname==='/logout'?styles.links:styles.link} >
+      <div className={pathname==='/logout'?styles.cards:styles.card} onClick={onlogout}>
+        <Link href="/home" className={pathname==='/logout'?styles.links:styles.link} >
         Logout
         </Link>
       </div>

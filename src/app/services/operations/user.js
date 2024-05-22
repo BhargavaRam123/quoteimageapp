@@ -5,6 +5,7 @@ import { setToken } from "@/app/redux/slices/userslice";
 import { Userroutes } from "./api";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
+import { Jaldi } from "next/font/google";
 export default function User() {
   const dispatch = useDispatch();
   const router = useRouter();
@@ -164,9 +165,10 @@ export default function User() {
         Userroutes.twitfileupload,
         formData
       );
-      console.log("response", response);
+      // console.log("response", response);
       toast.dismiss(toastid);
-      toast.success("Uploaded To Twitter");
+      toast.success("Uploaded To Twitter servers");
+      return response
     } catch (error) {
       console.error(
         "Error occurred in uploadfiletotwittercloud_op function :",
@@ -174,7 +176,32 @@ export default function User() {
       );
       toast.dismiss(toastid);
       toast.error("Error Occurred");
+      return ""
     }
+  }
+  async function tweet(email)
+  {
+      // console.log("email value in users:",email)
+      const toastid = toast.loading("tweeting....");
+      try {
+        const response = await apiconnector(
+          "POST",
+          Userroutes.tweet,
+          {email:email}
+        );
+        console.log("response", response);
+        toast.dismiss(toastid);
+        toast.success("Uploaded To Twitter");
+        return response
+      } catch (error) {
+        console.error(
+          "Error occurred in tweet function :",
+          error
+        );
+        toast.dismiss(toastid);
+        toast.error("Error Occurred");
+        return ""
+      }
   }
   return {
     sendotpop,
@@ -184,5 +211,6 @@ export default function User() {
     getcreations_op,
     getcreationbyid_op,
     uploadfiletotwittercloud_op,
+    tweet
   };
 }

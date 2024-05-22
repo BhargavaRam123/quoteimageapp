@@ -7,4 +7,5 @@ export const Userroutes = {
   getcreations: BASE_API_URL + "/getcreations",
   getcreationbyid: BASE_API_URL + "/getcreationbyid",
   twitfileupload: BASE_API_URL + "/twitfileupload",
+  tweet:BASE_API_URL+"/twitterauth"
 };
