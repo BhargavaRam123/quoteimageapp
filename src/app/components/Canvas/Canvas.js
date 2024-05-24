@@ -2,9 +2,10 @@
 import { useState } from "react";
 import User from "@/app/services/operations/user";
 import { useRef } from "react";
-import { useSelector } from "react-redux";
+import { useSelector } from "react-redux"; 
 import ShineButton from "../button/button";
 const Canvas = ({ tag,init,setinit }) => {
+  
   if(tag.imageurl!=='')
     setinit(1)
   const { email } = useSelector((state) => state.User);
@@ -20,7 +21,7 @@ const Canvas = ({ tag,init,setinit }) => {
   }
   const ref = useRef();
   // setinit(1)
-  const pixelRatio = window.devicePixelRatio || 1;
+  const pixelRatio = typeof window!=='undefined'? window.devicePixelRatio : 1;
   const image = new Image();
   image.src = tag.imageurl ? tag.imageurl : "";
   image.addEventListener("load", () => {

@@ -1,7 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
+const getFromLocalStorage = (key) => {
+  if (!key || typeof window === 'undefined') {
+      return ""
+  }
+  return localStorage.getItem(key)
+}
 const initialState = {
-  token: null || localStorage?.getItem("token"),
-  email: "" || localStorage?.getItem("email"),
+  token: null || getFromLocalStorage("token"),
+  email: "" || getFromLocalStorage("email"),
 };
 export const Userslice = createSlice({
   name: "User",

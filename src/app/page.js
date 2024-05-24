@@ -4,7 +4,7 @@ import NeubrutalismButton from "./components/button/button";
 import Mainapi from "./components/apicomponent/mainapi";
 import Imagecomponent from "./components/imagecomponent";
 import Radiocomp from "./components/radiocomp";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 export default function Home() {
@@ -16,9 +16,14 @@ export default function Home() {
   function onchange(e) {
     settag((p) => ({ ...p, [e.target.name]: e.target.value }));
   }
-
+  useEffect(()=>{
+    if(!token)
+      {
+        router.push("/login")
+      }
+  },[token])
   console.log("tag value:", tag);
-  return token ? (
+  return (
     <>
       <div className="maincontainer">
         <div className="container">
@@ -59,7 +64,5 @@ export default function Home() {
         <Imagecomponent tag={tag} init={init} setinit={setinit} />
       </div>
     </>
-  ) : (
-    router.push("/login")
-  );
+  ) 
 }
