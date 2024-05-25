@@ -35,7 +35,7 @@ export default function Mycreations() {
       {creations?.map((o) => {
         console.log("o value :", o);
         return (
-          <div className={styles.container} >
+          <div key={o._id} className={styles.container} >
             <div className={styles.card}>
               <Image src={o.url} fill />
             </div>

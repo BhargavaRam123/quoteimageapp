@@ -32,7 +32,7 @@ export default function Home() {
             <div>
               <select name="quote" onChange={onchange} className="inputs">
                 {tags.map((val) => {
-                  return <option value={val}>{val}</option>;
+                  return <option key={Math.random()} value={val}>{val}</option>;
                 })}
               </select>
             </div>
