@@ -29,11 +29,11 @@ export default function Mycreations() {
   }
   useEffect(() => {
     callapi();
-  }, []);
+  }, [email,token]);
   return (
     <div className={styles.cardcontainer}>
       {creations?.map((o) => {
-        console.log("o value :", o);
+        console.log("o value :", o.imageid);
         return (
           <div key={o._id} className={styles.container} >
             <div className={styles.card}>

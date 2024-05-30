@@ -16,6 +16,7 @@ export default function Page({ params }) {
   const { token, email } = useSelector((state) => state.User);
   const { getcreationbyid_op, uploadfiletotwittercloud_op, tweet } = User();
   async function callapi() {
+    console.log("params are:",params)
     const res = await getcreationbyid_op(token, params.imgid);
     console.log("response object is:", res);
     setimg(res.data.image);

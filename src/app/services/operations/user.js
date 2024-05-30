@@ -92,7 +92,9 @@ export default function User() {
       formData.append("imgname", imagename);
 
       // Perform upload to cloud service
-      const response = await apiconnector("POST", Userroutes.upload, formData);
+      const response = await apiconnector("POST", Userroutes.upload, formData,{
+        'Access-Control-Allow-Origin': '*'
+      });
       console.log("response", response);
       toast.dismiss(toastid);
       toast.success("Uploaded To cloud");
@@ -163,7 +165,10 @@ export default function User() {
       const response = await apiconnector(
         "POST",
         Userroutes.twitfileupload,
-        formData
+        formData,
+        {
+          'Access-Control-Allow-Origin': '*'
+        }
       );
       // console.log("response", response);
       toast.dismiss(toastid);

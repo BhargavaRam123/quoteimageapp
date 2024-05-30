@@ -8,12 +8,14 @@ const Canvas = ({ tag, init, setinit }) => {
   const { email } = useSelector((state) => state.User);
   const [imagename, setimagename] = useState("");
   const { uploadtocloud } = User();
+  const [blobs,setblob] = useState()
   const ref = useRef();
   const pixelRatio = typeof window !== "undefined" ? window.devicePixelRatio : 1;
 
   async function btmpgenerator() {
     const res = await fetch(tag.imageurl);
     const blob = await res.blob();
+    setblob(blob)
     const bmp = await createImageBitmap(blob);
     return bmp;
   }
@@ -69,11 +71,11 @@ const Canvas = ({ tag, init, setinit }) => {
 
   async function handleonsubmit(e) {
     e.preventDefault();
-    const canvas = ref.current;
-    let imageBlob = await new Promise((resolve) =>
-      canvas.toBlob(resolve, "image/png")
-    );
-    uploadtocloud(imageBlob, imagename, email);
+    // const canvas = ref.current;
+    // let imageBlob = await new Promise((resolve) =>
+    //   canvas.toBlob(resolve, "image/png")
+    // );
+    uploadtocloud(blobs, imagename, email);
   }
 
   const handleDownload = () => {
