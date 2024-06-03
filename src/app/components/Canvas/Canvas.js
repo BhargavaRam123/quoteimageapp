@@ -71,11 +71,11 @@ const Canvas = ({ tag, init, setinit }) => {
 
   async function handleonsubmit(e) {
     e.preventDefault();
-    // const canvas = ref.current;
-    // let imageBlob = await new Promise((resolve) =>
-    //   canvas.toBlob(resolve, "image/png")
-    // );
-    uploadtocloud(blobs, imagename, email);
+    const canvas = ref.current;
+    let imageBlob = await new Promise((resolve) =>
+      canvas.toBlob(resolve, "image/png")
+    );
+    uploadtocloud(imageBlob, imagename, email);
   }
 
   const handleDownload = () => {
