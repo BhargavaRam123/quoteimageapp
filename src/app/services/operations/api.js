@@ -1,4 +1,4 @@
-const BASE_API_URL = "https://quoteimageappbackend.onrender.com/api/auth";
+const BASE_API_URL = "https://hammerhead-app-ylxkm.ondigitalocean.app/api/auth";
 export const Userroutes = {
   signup: BASE_API_URL + "/signup",
   sendotp: BASE_API_URL + "/sendotp",
