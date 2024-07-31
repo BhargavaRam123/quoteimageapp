@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState, useRef } from "react";
+import { PDFDocument } from 'pdf-lib'
 import User from "@/app/services/operations/user";
 import { useSelector } from "react-redux";
 import ShineButton from "../button/button";
@@ -20,55 +21,6 @@ const Canvas = ({ tag, init, setinit }) => {
     return bmp;
   }
 
-  useEffect(() => {
-    if (tag.imageurl !== "") {
-      setinit(1);
-    }
-  }, [tag.imageurl, setinit]);
-
-  useEffect(() => {
-    if (init === 1) {
-      const initializeCanvas = async () => {
-        const canvas = ref.current;
-        if (canvas) {
-          const context = canvas.getContext("2d");
-          canvas.width = canvas.offsetWidth * pixelRatio;
-          canvas.height = canvas.offsetHeight * pixelRatio;
-          canvas.style.width = "900px";
-          canvas.style.height = "600px";
-          context.scale(pixelRatio, pixelRatio);
-          context.font = "30px Arial";
-          context.textAlign = "center";
-
-          const image = await btmpgenerator();
-          context.drawImage(image, 0, 0, 900, 600);
-
-          const data = tag.quotedata[0]?.quote;
-          const arr = data?.split(" ");
-          let str = "";
-          const farr = [];
-          for (let i = 0; i < arr?.length; i++) {
-            if (str?.length < 30) {
-              str += arr[i] + " ";
-            } else {
-              farr.push(str);
-              str = arr[i] + " ";
-            }
-          }
-          farr.push(str);
-          console.log("Modified array is:", farr);
-          let x = canvas.width / 2; // Center horizontally
-          let y = canvas.height / 2 - 220;
-          for (let i = 0; i < farr.length; i++) {
-            context.fillText(farr[i], x, y);
-            y += 50;
-          }
-        }
-      };
-      initializeCanvas();
-    }
-  }, [init, tag.quotedata, pixelRatio]);
-
   async function handleonsubmit(e) {
     e.preventDefault();
     const canvas = ref.current;
@@ -88,6 +40,20 @@ const Canvas = ({ tag, init, setinit }) => {
     link.click();
   };
 
+  async function createimage(){
+    const pdfDoc = await PDFDocument.create()
+    const jpgImage = await pdfDoc.embedJpg(jpgImageBytes)
+    const jpgDims = jpgImage.scale(0.25)
+    const pngDims = pngImage.scale(0.5)
+    const page = pdfDoc.addPage()
+    page.drawImage(jpgImage, {
+      x: page.getWidth() / 2 - jpgDims.width / 2,
+      y: page.getHeight() / 2 - jpgDims.height / 2,
+      width: jpgDims.width,
+      height: jpgDims.height,
+    })
+    const pdfBytes = await pdfDoc.save()
+  }
   return (
     <div>
       <canvas ref={ref} className={init === 0 ? "dnone" : "normal"} />

@@ -228,3 +228,14 @@
     transform: rotate(0deg);
   }
 }
+
+.imagecontainer {
+  text-align: center;
+  position: relative;
+  width: 1200px;
+  height: 800px;
+}
+.imageinnercontainer {
+  position: absolute;
+  color: yellow;
+}

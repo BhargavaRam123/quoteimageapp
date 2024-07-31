@@ -7,21 +7,22 @@ import Radiocomp from "./components/radiocomp";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
+import style from "./page.module.css";
 export default function Home() {
   const router = useRouter();
-  const [init,setinit] = useState(0)
+  const [init, setinit] = useState(0);
   const { token } = useSelector((state) => state.User);
   const { tag, settag, handleonclick } = Mainapi();
 
   function onchange(e) {
     settag((p) => ({ ...p, [e.target.name]: e.target.value }));
   }
-  useEffect(()=>{
-    if(!token)
-      {
-        router.push("/login")
-      }
-  },[token])
+  useEffect(() => {
+    if (!token) {
+      router.push("/login");
+    }
+  }, [token]);
   console.log("tag value:", tag);
   return (
     <>
@@ -32,7 +33,11 @@ export default function Home() {
             <div>
               <select name="quote" onChange={onchange} className="inputs">
                 {tags.map((val) => {
-                  return <option key={Math.random()} value={val}>{val}</option>;
+                  return (
+                    <option key={Math.random()} value={val}>
+                      {val}
+                    </option>
+                  );
                 })}
               </select>
             </div>
@@ -45,7 +50,7 @@ export default function Home() {
                 name="image"
                 value={tag.image}
                 onChange={onchange}
-                style={{textAlign:"left"}}
+                style={{ textAlign: "left" }}
                 className="inputs"
               />
             </div>
@@ -57,12 +62,17 @@ export default function Home() {
             Get
           </button> */}
           <div onClick={handleonclick}>
-          <NeubrutalismButton value="Get"/>
+            <NeubrutalismButton value="Get" />
           </div>
         </div>
-
-        <Imagecomponent tag={tag} init={init} setinit={setinit} />
+        <div className={style.imagecontainer}>
+          <Image src={tag.imageurl} layout="fill" />
+          <div className={style.imageinnercontainer}>
+            {tag?.quotedata[0]?.quote}
+          </div>
+        </div>
+        {/* <Imagecomponent tag={tag} init={init} setinit={setinit} /> */}
       </div>
     </>
-  ) 
+  );
 }
