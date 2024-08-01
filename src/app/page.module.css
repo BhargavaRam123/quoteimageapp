@@ -230,12 +230,15 @@
 }
 
 .imagecontainer {
-  text-align: center;
   position: relative;
-  width: 1200px;
-  height: 800px;
+  text-align: center;
+  width: 700px;
+  height: 700px;
 }
 .imageinnercontainer {
   position: absolute;
-  color: yellow;
+  width: 400px;
+  top: 350px;
+  left: 150px;
+  color: white;
 }

@@ -3,18 +3,64 @@ import { tags } from "./constants/selectarray";
 import NeubrutalismButton from "./components/button/button";
 import Mainapi from "./components/apicomponent/mainapi";
 import Imagecomponent from "./components/imagecomponent";
+import { useRef } from "react";
 import Radiocomp from "./components/radiocomp";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import style from "./page.module.css";
+import download from "downloadjs";
+import { toPng } from "html-to-image";
+import ShineButton from "./components/button/button.js";
+import User from "@/app/services/operations/user";
 export default function Home() {
+  const divRef = useRef(null);
+  const { uploadtocloud } = User();
+  const { email } = useSelector((state) => state.User);
   const router = useRouter();
   const [init, setinit] = useState(0);
   const { token } = useSelector((state) => state.User);
   const { tag, settag, handleonclick } = Mainapi();
+  const [imagename, setimagename] = useState("");
+  const dataURLToBlob = (dataURL) => {
+    const [header, base64] = dataURL.split(",");
+    const byteString = atob(base64);
+    const mimeString = header.split(":")[1].split(";")[0];
+    const ab = new ArrayBuffer(byteString.length);
+    const ia = new Uint8Array(ab);
 
+    for (let i = 0; i < byteString.length; i++) {
+      ia[i] = byteString.charCodeAt(i);
+    }
+
+    return new Blob([ab], { type: mimeString });
+  };
+
+  async function handleonsubmit(e) {
+    e.preventDefault();
+    toPng(divRef.current)
+      .then((dataUrl) => {
+        let imageBlob = dataURLToBlob(dataUrl);
+        uploadtocloud(imageBlob, imagename, email);
+      })
+      .catch((err) => {
+        console.error("Failed to convert div to image:", err);
+      });
+  }
+  const handleDownloadImage = () => {
+    if (divRef.current === null) {
+      return;
+    }
+
+    toPng(divRef.current)
+      .then((dataUrl) => {
+        download(dataUrl, "div-image.png");
+      })
+      .catch((err) => {
+        console.error("Failed to convert div to image:", err);
+      });
+  };
   function onchange(e) {
     settag((p) => ({ ...p, [e.target.name]: e.target.value }));
   }
@@ -65,13 +111,41 @@ export default function Home() {
             <NeubrutalismButton value="Get" />
           </div>
         </div>
-        <div className={style.imagecontainer}>
-          <Image src={tag.imageurl} layout="fill" />
+        <div className={style.imagecontainer} ref={divRef}>
+          <Image
+            src={tag.imageurl}
+            layout="fill"
+            objectFit="contain"
+            // width={700}
+            // height={400}
+          />
           <div className={style.imageinnercontainer}>
-            {tag?.quotedata[0]?.quote}
+            <div className="montserrat">{tag?.quotedata[0]?.quote}</div>
           </div>
         </div>
+        <button
+          onClick={handleDownloadImage}
+          style={{ backgroundColor: "white" }}
+        >
+          Download as Image
+        </button>
         {/* <Imagecomponent tag={tag} init={init} setinit={setinit} /> */}
+        <form
+          onSubmit={handleonsubmit}
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <div style={{ color: "white" }}>Upload To My Creations</div>
+          <input
+            type="text"
+            onChange={(e) => setimagename(e.target.value)}
+            value={imagename}
+          />
+          <ShineButton value="Upload" />
+        </form>
       </div>
     </>
   );

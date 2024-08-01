@@ -3,10 +3,15 @@ import { store } from "./redux/store";
 import { Provider } from "react-redux";
 import { Inter } from "next/font/google";
 import { Toaster } from "react-hot-toast";
+import { Montserrat } from "next/font/google";
+// import Head from "next/document";
 import Navbar from "./components/commoncomponents/navbar";
 import "./globals.css";
 
-const inter = Inter({ subsets: ["latin"] });
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  variable: "--font-montserrat",
+});
 
 // export const metadata = {
 //   title: "Create Next App",
@@ -17,7 +22,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <Provider store={store}>
-        <body className={inter.className}>
+        <body className={montserrat.variable}>
           <Navbar />
           <Toaster />
           {children}
