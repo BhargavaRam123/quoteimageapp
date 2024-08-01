@@ -15,6 +15,7 @@
     "downloadjs": "^1.4.7",
     "html-to-image": "^1.11.11",
     "jimp": "^0.22.12",
+    "modern-screenshot": "^4.4.39",
     "next": "14.1.1",
     "pdf-lib": "^1.17.1",
     "pdfkit": "^0.15.0",

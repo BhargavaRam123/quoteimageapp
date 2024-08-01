@@ -3,6 +3,7 @@ import { tags } from "./constants/selectarray";
 import NeubrutalismButton from "./components/button/button";
 import Mainapi from "./components/apicomponent/mainapi";
 import Imagecomponent from "./components/imagecomponent";
+import { domToPng } from "modern-screenshot";
 import { useRef } from "react";
 import Radiocomp from "./components/radiocomp";
 import { useEffect, useState } from "react";
@@ -11,7 +12,6 @@ import { useRouter } from "next/navigation";
 import Image from "next/image";
 import style from "./page.module.css";
 import download from "downloadjs";
-import { toPng } from "html-to-image";
 import ShineButton from "./components/button/button.js";
 import User from "@/app/services/operations/user";
 export default function Home() {
@@ -23,6 +23,21 @@ export default function Home() {
   const { token } = useSelector((state) => state.User);
   const { tag, settag, handleonclick } = Mainapi();
   const [imagename, setimagename] = useState("");
+
+  async function handleDownloadImage() {
+    if (divRef.current === null) {
+      return;
+    }
+    console.log("state value:", divRef.current);
+    toPng(divRef.current);
+    domToPng(divRef.current)
+      .then((dataUrl) => {
+        download(dataUrl, "div-image.png");
+      })
+      .catch((err) => {
+        console.error("Failed to convert div to image:", err);
+      });
+  }
   const dataURLToBlob = (dataURL) => {
     const [header, base64] = dataURL.split(",");
     const byteString = atob(base64);
@@ -39,7 +54,7 @@ export default function Home() {
 
   async function handleonsubmit(e) {
     e.preventDefault();
-    toPng(divRef.current)
+    domToPng(divRef.current)
       .then((dataUrl) => {
         let imageBlob = dataURLToBlob(dataUrl);
         uploadtocloud(imageBlob, imagename, email);
@@ -48,19 +63,6 @@ export default function Home() {
         console.error("Failed to convert div to image:", err);
       });
   }
-  const handleDownloadImage = () => {
-    if (divRef.current === null) {
-      return;
-    }
-
-    toPng(divRef.current)
-      .then((dataUrl) => {
-        download(dataUrl, "div-image.png");
-      })
-      .catch((err) => {
-        console.error("Failed to convert div to image:", err);
-      });
-  };
   function onchange(e) {
     settag((p) => ({ ...p, [e.target.name]: e.target.value }));
   }
@@ -111,20 +113,25 @@ export default function Home() {
             <NeubrutalismButton value="Get" />
           </div>
         </div>
-        <div className={style.imagecontainer} ref={divRef}>
-          <Image
-            src={tag.imageurl}
-            layout="fill"
-            objectFit="contain"
-            // width={700}
-            // height={400}
-          />
-          <div className={style.imageinnercontainer}>
-            <div className="montserrat">{tag?.quotedata[0]?.quote}</div>
+        {tag.imageurl ? (
+          <div className={style.imagecontainer} ref={divRef}>
+            <Image
+              src={tag.imageurl}
+              layout="fill"
+              objectFit="contain"
+              alt="please click on get to start"
+              // width={700}
+              // height={400}
+            />
+            <div className={style.imageinnercontainer}>
+              <div className="montserrat">{tag?.quotedata[0]?.quote}</div>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div style={{ color: "white" }}>click on get to start</div>
+        )}
         <button
-          onClick={handleDownloadImage}
+          onClick={() => handleDownloadImage()}
           style={{ backgroundColor: "white" }}
         >
           Download as Image
