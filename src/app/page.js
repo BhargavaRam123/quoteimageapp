@@ -2,7 +2,6 @@
 import { tags } from "./constants/selectarray";
 import NeubrutalismButton from "./components/button/button";
 import Mainapi from "./components/apicomponent/mainapi";
-import Imagecomponent from "./components/imagecomponent";
 import { domToPng } from "modern-screenshot";
 import { useRef } from "react";
 import Radiocomp from "./components/radiocomp";
@@ -120,8 +119,6 @@ export default function Home() {
               layout="fill"
               objectFit="contain"
               alt="please click on get to start"
-              // width={700}
-              // height={400}
             />
             <div className={style.imageinnercontainer}>
               <div className="montserrat">{tag?.quotedata[0]?.quote}</div>
